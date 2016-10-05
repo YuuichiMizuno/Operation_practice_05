@@ -11,5 +11,26 @@ import Foundation
 
 class TestOperation2 : Operation
 {
+    let intProperty : Int
+    var intReturnVal: Int
     
+    init( intProperty i : Int )
+    {
+        self.intProperty  = i
+        self.intReturnVal = 0 // 初期値
+        super.init()
+    }
+    
+    override func main()
+    {
+        if isCancelled
+        {
+            return
+        }
+        
+        for i in 0...0
+        {
+            print("Operation2:: \(i) \(Thread.current)")
+        }
+    }
 }
