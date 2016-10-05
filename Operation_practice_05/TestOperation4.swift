@@ -11,5 +11,23 @@ import Foundation
 
 class TestOperation4 : Operation
 {
+    var isAuthorityUser : Bool
+    
+    override init()
+    {
+        self.isAuthorityUser = false
+    }
+    
+    override func main()
+    {
+        // なんらかのチェック処理があるとして
+        isAuthorityUser = true
+    }
+    
+    
+    func getResultValue() -> Bool
+    {
+        return self.isAuthorityUser
+    }
     
 }

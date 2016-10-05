@@ -11,5 +11,23 @@ import Foundation
 
 class TestOperation3 : Operation
 {
+    var isExistUser : Bool
+    
+    override init()
+    {
+        self.isExistUser = false
+        super.init()
+    }
+    
+    override func main()
+    {
+        // チェック処理があったとして
+        self.isExistUser = true
+    }
+    
+    func getResultValue() -> Bool
+    {
+        return self.isExistUser
+    }
     
 }

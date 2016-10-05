@@ -55,6 +55,8 @@ class ViewController: UIViewController
             //operation1.cancel() // test1
             //operation1.main()   // test1 ... 直接mainはcancelを無視する
 
+            
+        
             operation1.start()
     }
     

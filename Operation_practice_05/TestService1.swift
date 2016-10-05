@@ -35,6 +35,56 @@ import Foundation
 
 class TestService1 : NSObject
 {
+    let intProperty : Int
+    
+    init( intProperty i: Int )
+    {
+        self.intProperty = i
+    }
+    
+    /// **ログイン認証(例)**
+    /// 1.ユーザーが存在するか(ID/PW) ? 存在する : 存在しない
+    /// 2.権限が存在するか ? ユーザーの権限あり : ユーザーの権限なし
+    // 書けてるけど、ダサいなー
+    func loginAuthentication() -> Bool // ログイン認証
+    {
+        var isAuthenticated = false
+        
+        let testOperation3  = TestOperation3()
+        let testOperation4  = TestOperation4()
+        
+            testOperation3.completionBlock = {
+                if testOperation3.getResultValue() {
+                    DispatchQueue.main.sync {
+                        testOperation4.start()
+                    }
+                }
+                else {
+                    testOperation4.cancel()
+                }
+            }
+            testOperation4.completionBlock = {
+                if testOperation4.getResultValue() {
+                    isAuthenticated = true
+                }
+            }
+            testOperation3.start()
+        
+        return isAuthenticated
+    }
+    
+    
+    func attendancePreparation() // 出勤の準備
+    {
+        
+    }
+    
+    
+    func numberingCustomerID() // 顧客IDの採番
+    {
+        
+    }
+    
     
     
 
