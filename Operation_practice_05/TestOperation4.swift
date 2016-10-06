@@ -16,17 +16,20 @@ class TestOperation4 : Operation
     override init()
     {
         self.isAuthorityUser = false
+        super.init()
     }
     
     override func main()
     {
         // なんらかのチェック処理があるとして
         isAuthorityUser = true
+        print("Operation4:main: \(isAuthorityUser) \(Thread.current)")
     }
     
     
     func getResultValue() -> Bool
     {
+        print("Operation4:result: \(isAuthorityUser) \(Thread.current)")
         return self.isAuthorityUser
     }
     

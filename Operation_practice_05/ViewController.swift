@@ -19,7 +19,8 @@ class ViewController: UIViewController
 {
 
     
-    override func viewDidLoad() {
+    override func viewDidLoad()
+    {
         super.viewDidLoad()
     }
 
@@ -42,6 +43,8 @@ class ViewController: UIViewController
         //
         let operation1 = TestOperation1( intProperty: 1)
         let operation2 = TestOperation2( intProperty: 2)
+        let service1   = TestService1( intProperty: 1)
+        
             //operation1.waitUntilFinished() // ... コルーチン !? 実施されない ?!
             operation1.completionBlock = {          // test2 ... 完了時のタイミングで処理
                 
@@ -54,8 +57,16 @@ class ViewController: UIViewController
             }                                       // test2 ... 値も取り出せる
             //operation1.cancel() // test1
             //operation1.main()   // test1 ... 直接mainはcancelを無視する
-
-            
+            operation2.completionBlock = {
+                
+                DispatchQueue.main.async
+                {
+                    //let result = service1.loginAuthentication() // 戻り値で結果を受け取ろうとしてもいきなり最後に到達
+                    //print( "loginAuthentication = \(result)" )  //
+                    service1.loginAuthentication()
+                    
+                }
+            }
         
             operation1.start()
     }

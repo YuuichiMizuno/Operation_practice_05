@@ -12,10 +12,12 @@ import Foundation
 class TestOperation3 : Operation
 {
     var isExistUser : Bool
+    var isAuthorityUser : Bool // notice: 直列で実行したいため、最終結果も一番フロントのOperationが持つことに
     
     override init()
     {
         self.isExistUser = false
+        self.isAuthorityUser = false
         super.init()
     }
     
@@ -23,11 +25,21 @@ class TestOperation3 : Operation
     {
         // チェック処理があったとして
         self.isExistUser = true
+        print("Operation3:main: \(isExistUser) \(Thread.current)")
+        
+        // memo: 直列で行いたがために、キューを使わないならoperationの中にoperationを持つことに
+        let operation4 = TestOperation4() // 引数にユーザーIDがあったとして
+            operation4.start()
+        
+        if  operation4.getResultValue() {
+            self.isAuthorityUser = true
+        }
     }
     
     func getResultValue() -> Bool
     {
-        return self.isExistUser
+        print("Operation3:result: \(isAuthorityUser) \(Thread.current)")
+        return self.isAuthorityUser
     }
     
 }

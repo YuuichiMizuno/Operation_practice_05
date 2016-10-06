@@ -51,25 +51,40 @@ class TestService1 : NSObject
         var isAuthenticated = false
         
         let testOperation3  = TestOperation3()
-        let testOperation4  = TestOperation4()
         
-            testOperation3.completionBlock = {
-                if testOperation3.getResultValue() {
-                    DispatchQueue.main.sync {
-                        testOperation4.start()
-                    }
-                }
-                else {
-                    testOperation4.cancel()
-                }
-            }
-            testOperation4.completionBlock = {
-                if testOperation4.getResultValue() {
-                    isAuthenticated = true
-                }
-            }
+// memo: 直列で行いたい場合、completionBlockではどうしてもサブスレットに飛んでしまうため使えない
+//       結果、一つのoperationとやりとりする形に。operationの中から続きのoperationを続けるチェーンになる
+//       無理やり感がすごい。柔軟な業務フローを表現しにくいし、見通しも悪い、オブジェクト指向と言えない
+//       と壁にぶつかれたところで、今度はキューを導入してどう改善されるか検証していきたい
+//       他のアクティビティ例も用意したが、この書き方は面倒。気が進まず
+//        let testOperation4  = TestOperation4()
+//
+//            testOperation3.completionBlock = {
+//                DispatchQueue.main.sync {
+//                    if testOperation3.getResultValue() {
+//                        testOperation4.start()
+//                        testOperation4.waitUntilFinished() // start直後でないとstartすらされなくなる
+//                    }
+//                    else {
+//                        testOperation4.cancel()
+//                    }
+//                }
+//            }
+//            testOperation4.completionBlock = {
+//                DispatchQueue.main.sync {
+//                    if testOperation4.getResultValue() {
+//                        isAuthenticated = true
+//                    }
+//                }
+//            }
             testOperation3.start()
+            testOperation3.waitUntilFinished() // start直後でないとstartすらされなくなる
+        isAuthenticated = testOperation3.getResultValue()
         
+            // koko?
+        print("loginAuthentication:last: \(isAuthenticated) \(Thread.current)")
+        // 3 -> 4 -> return と順番に行いたいが スレッドがmainから外れるので先に最後ききてしまう。comp部がsubスレッドだから
+        // その後なんとか、直列に動作させてみた
         return isAuthenticated
     }
     
