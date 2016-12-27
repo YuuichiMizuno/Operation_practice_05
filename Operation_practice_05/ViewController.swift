@@ -7,6 +7,8 @@
 //
 /* このProjectでは以下を試す
  * operation1.完了時のタイミングで別の処理を行うサンプル
+ *   標準的なoperation{main部に処理を記述}、呼び出し側でcomp部から、次につなげる
+ *      実行はシンプルに一つに対して実行すれば繋がるようにする
  * operation2.実施後に結果の値を受け取るサンプル
  * //3.依存性を利用して1->2の設定にして、2から実行させてみる キューでのみの機能？
  * 4-Service.Operationを管理・実施するクラスから想定したアクテビティを再現してみる
@@ -50,7 +52,7 @@ class ViewController: UIViewController
                 
                 print("operation1 : Completion: '\(operation1.intProperty)' \(Thread.current)")
 
-                DispatchQueue.main.async
+                DispatchQueue.main.async    // caution! when don't use "DispathQueue.main"  thuread isn't main.
                 {
                     operation2.start()
                 }
@@ -68,7 +70,7 @@ class ViewController: UIViewController
                 }
             }
         
-            operation1.start()
+            operation1.start()  // simple start.
     }
     
 
